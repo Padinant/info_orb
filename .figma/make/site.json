@@ -1,0 +1,10 @@
+{
+  "description": "Delivers random fun facts with each click in a visually elegant cosmic-themed interface, offering an engaging and magical user experience.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
