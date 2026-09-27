@@ -10,6 +10,10 @@ import siteConfiguration from './.figma/make/site.json'
 export default defineConfig(({ mode }) => {
   // .figma/make/deploy-preview passes `--mode development` for cached-preview builds.
   const emitSourcemaps = mode === 'development'
+  const port = parseInt(process.env.PORT || '8443')
+  const codespacesHost = process.env.CODESPACE_NAME
+    ? `${process.env.CODESPACE_NAME}-${port}.${process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN || 'app.github.dev'}`
+    : undefined
 
   return {
     base: process.env.FIGMA_PUBLIC_URL ? `${process.env.FIGMA_PUBLIC_URL}/` : '/',
@@ -32,8 +36,9 @@ react(),
     },
     server: {
       host: process.env.FIGMA_DEV_SERVER_HOST || '0.0.0.0',
-      port: parseInt(process.env.PORT || '8443'),
+      port,
       strictPort: true,
+      allowedHosts: codespacesHost ? [codespacesHost] : [],
       watch: {
         ignored: [
           '**/.figma/**',
@@ -42,7 +47,7 @@ react(),
     },
     preview: {
       host: process.env.FIGMA_DEV_SERVER_HOST || '0.0.0.0',
-      port: parseInt(process.env.PORT || '8443'),
+      port,
     },
   }
 })
